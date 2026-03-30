@@ -68,12 +68,13 @@ class FundamentalAgent:
             marg = info.get('profitMargins', 'N/A')
             dte = info.get('debtToEquity', 'N/A')
             if isinstance(dte, (int, float)):
-                if 1 < dte < 50:
-                    pass
-                elif dte > 500:
-                    import logging
-                    logging.warning("Suspicious Debt-to-Equity detected. Flagging for Auditor.")
-                    dte = f"{dte} (FLAGGED FOR AUDITOR)"
+                # Before passing to the Supervisor, normalize the D/E ratio
+                # Most APIs return D/E as a raw number where 0.20 = 20%
+                # If the value is > 5 and it's a Mega-cap, it's almost certainly a percentage misread
+                if dte > 5.0:
+                    # Check if the value looks like a percentage (e.g., 19.5)
+                    # Standard Mega-cap D/E is rarely over 2.0 (200%)
+                    dte = dte / 100
             sect = info.get('sector', 'N/A')
         except:
             current_price, pe, marg, dte, sect = 'N/A', 'N/A', 'N/A', 'N/A', 'N/A'

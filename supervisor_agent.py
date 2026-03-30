@@ -129,8 +129,29 @@ class SupervisorAgent:
         # 4. MASTER SYNTHESIS (CIO Adjudication)
         if not self.model: return None, reports
         
+        # --- RECURSIVE OPTIMIZATION HOOK ---
+        try:
+            from optimizer_engine import get_global_trust_weights
+            dynamic_weights, trust_avg = get_global_trust_weights()
+            if trust_avg < 0.50:
+                critic_weight = dynamic_weights.get("Critic", critic_weight)
+                swarm_weight = 1.0 - critic_weight
+        except Exception as oe:
+            logging.warning(f"Optimization Engine offline: {oe}")
+            dynamic_weights = {}
+            trust_avg = 1.0
+
         dynamic_roe = f"""
         6. REGIME ANCHOR ({regime}): The Macro-Regime dictates strict Tactical Stance weighting.
+        
+        PROTOCOL: RECURSIVE WEIGHT INJECTION
+        You are the Master CIO. You are currently operating with Dynamic Weight Tuning enabled.
+        Current Performance Data:
+        Global Swarm Trust: {trust_avg*100:.1f}%
+        Active Weight Matrix: {dynamic_weights}
+        
+        Constraint: If the Swarm's historical accuracy is below 50%, the Adversarial Critic has been granted a High-Intensity Veto (Weight: {critic_weight}). You must give preferential treatment to the Critic's 'Bull Trap' warnings unless the Generational Alpha trigger is active.
+        
         You MUST calculate the final algorithmic Conviction Score mathematically using this exact formula:
         Final_Conviction = (Swarm_Score * {swarm_weight}) + (Critic_Score * {critic_weight})
         Apply this strictly to the 'conviction_delta'. If Regime=Volatile-Bear, the Critic natively holds veto power.
@@ -147,6 +168,15 @@ class SupervisorAgent:
             final_json["critic"] = critic_json
             final_json["raw_integrity"] = integrity_status
             final_json["geopolitical"] = ipb_json
+            
+            # Phase 3 AAR Hook: Save to Persistence Ledger
+            try:
+                import yfinance as yf
+                current_price = yf.Ticker(ticker).info.get('currentPrice', yf.Ticker(ticker).info.get('regularMarketPrice', 0.0))
+                from backtest_validator import save_verdict_to_blackbox
+                save_verdict_to_blackbox(final_json, ticker, current_price)
+            except Exception as loop_e:
+                logging.error(f"Failed to hook Blackbox DB on return: {loop_e}")
             
             return final_json, reports
         except Exception as e:

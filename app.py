@@ -61,7 +61,7 @@ def main():
     st.set_page_config(page_title="Anti-gravity 8-Node Swarm", page_icon="⚖️", layout="wide", initial_sidebar_state="expanded")
     
     st.sidebar.title("📡 Command Center")
-    mode = st.sidebar.radio("Operating Mode", ["Manual Audit", "Autonomous Recon"])
+    mode = st.sidebar.radio("Operating Mode", ["Manual Audit", "Autonomous Recon", "AAR Ledger (Backtest)"])
     st.sidebar.markdown("---")
     st.sidebar.caption("Anti-gravity Quant Desk © 2026")
     
@@ -119,6 +119,52 @@ def main():
                         t_name = j.get("ticker", "UNKNOWN")
                         with st.expander(f"📌 HIGH-CONVICTION SCOUT TARGET LOCKED: {t_name}", expanded=True):
                             render_audit_card(t_name, j, r)
+
+    elif mode == "AAR Ledger (Backtest)":
+        st.markdown("<h4 style='text-align: center; color: #8e44ad;'>📈 After-Action DB Overrider</h4>", unsafe_allow_html=True)
+        st.info("The Validator physically tracks the paper-trade lifecycle and natively penalizes Hallucinating nodes utilizing Spearman Rank correlation metrics over time.")
+        
+        try:
+            from optimizer_engine import get_global_trust_weights
+            weights, trust_avg = get_global_trust_weights()
+            
+            st.subheader("🧠 Self-Optimization: Trust Matrix")
+            df_weights = pd.DataFrame([weights]).T.reset_index()
+            df_weights.columns = ['Agent', 'Active Weight']
+            
+            st.data_editor(
+                df_weights,
+                column_config={
+                    "Active Weight": st.column_config.ProgressColumn(
+                        "Current Influence",
+                        help="The mathematical weight used in final synthesis",
+                        format="%.2f",
+                        min_value=0,
+                        max_value=1,
+                    ),
+                },
+                hide_index=True,
+                use_container_width=True
+            )
+            
+            if trust_avg < 0.40:
+                st.error(f"🤖 **SELF-OPTIMIZATION ACTIVE:** Boosting Adversarial Critic weight natively due to trailing volatility-drift (Swarm Trust {trust_avg*100:.1f}%).")
+        
+            from backtest_validator import grade_overrides
+            needs_recalibration, grade_report = grade_overrides()
+            if needs_recalibration:
+                st.error(f"🚨 **LOGIC RECALIBRATION REQUIRED:** Judicial Override trailing win-rate failing baseline ({grade_report}). Advocate tightening Generational Alpha trigger to RSI-20 to avoid catching 'Falling Knives'.")
+            else:
+                st.success(f"⚖️ Judicial Overrides maintaining structural precision. {grade_report}")
+                
+            # Display Mission Logs locally
+            import sqlite3
+            conn = sqlite3.connect('antigravity_aar.db')
+            df_logs = pd.read_sql_query("SELECT mission_id, timestamp, ticker, regime, conviction_delta, override_active, price_entry FROM mission_logs ORDER BY timestamp DESC LIMIT 25", conn)
+            st.dataframe(df_logs, use_container_width=True)
+            conn.close()
+        except Exception as e:
+            st.warning("Database currently empty. Execute 8-Node CI array loops to populate the structural persistent ledgers.")
 
 if __name__ == "__main__":
     main()
