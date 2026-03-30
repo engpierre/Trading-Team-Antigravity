@@ -21,12 +21,17 @@ class FetchAIAgentConnector:
             live_price = ticker_info.get('currentPrice', ticker_info.get('lastPrice', ticker_info.get('regularMarketPrice')))
             
             if live_price is None:
-                return "FETCH.AI ORACLE ERROR: Could not retrieve reliable live price data."
-                
+                # Reality Anchor Fallback: If .info is rate-limited, ping .history for closing price
+                hist = stock.history(period="1d")
+                if not hist.empty:
+                    live_price = hist['Close'].iloc[-1]
+                else:
+                    return f"FETCH.AI ORACLE ERROR [{ticker.upper()}]: Could not retrieve reliable live price data. Scraper offline."
+                    
             return f"""
             --- FETCH.AI DECENTRALIZED ORACLE ---
+            TARGET SYMBOL: {ticker.upper()}
             STRICTLY CURRENT PRICE: {float(live_price):.2f}
-            ORACLE STATUS: LIVE VERIFICATION SUCCESSFUL
             """
             
         except Exception as e:

@@ -48,7 +48,7 @@ class TechnicalAgent:
         except:
             live_price = None
 
-        if stock_data.empty: return "Failed to fetch historical data."
+        if stock_data.empty: return f"Failed to fetch historical data for {self.ticker}."
         if isinstance(stock_data.columns, pd.MultiIndex):
             stock_data.columns = stock_data.columns.droplevel(1)
             bench_data.columns = bench_data.columns.droplevel(1)
@@ -101,7 +101,7 @@ class TechnicalAgent:
         
         if not self.model: return f"[!] Missing GEMINI_API_KEY. Data:\n{data}"
         try:
-            prompt = f"{self.system_prompt}\n\nPlease generate the technical summary report based on this data:\n{data}"
+            prompt = f"{self.system_prompt}\n\nPlease generate the technical summary report for {self.ticker} based on this data:\n{data}"
             response = self.model.generate_content(prompt)
             return response.text
         except Exception as e:

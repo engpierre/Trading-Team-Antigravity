@@ -19,8 +19,8 @@ class InsiderIntegrityAuditor:
         The "Integrity Audit" Logic:
         1. Value vs. Sentiment: If 'Sentiment' is highly bullish but 'Fundamental' data is declining/weak, flag as a 'Contradiction: Potential Hype Trap'.
         2. Whale vs. Technical: If 'Technical' chart is bullish but 'WhaleWatcher' reports massive C-Suite/Dark Pool selling, flag as a 'Contradiction: Distributive Phase'.
-        3. Unit Validation (Common Sense Filter): If the ticker's Market Cap > $500B (Megacap), any Debt-to-Equity reported > 100% must be flagged as a 'Unit Conversion Error' and discarded.
-        4. Temporal Sync: Verify the Technical Report date matches the CURRENT SYSTEM DATE closely. If there is a huge discrepancy, disregard the technical metadata and use the Fetch.AI real-time price tick as the only source of truth.
+        3. Unit Validation (Common Sense Filter): If the ticker's Market Cap > $1T, a Debt-to-Equity ratio between 0.5 and 2.5 is considered 'Nominal' and should not trigger a 'Unit Conversion Error'. Otherwise, flag percentages hallucinated as raw integers.
+        4. Temporal Sync: Verify the Technical Report date matches the CURRENT SYSTEM DATE closely. TEMPORAL AMENDMENT: You are authorized to accept any Technical Report with a timestamp within +/- 24 hours of the Fetch.AI Oracle 'Ground Truth'. Do not flag 'Temporal Drift' for same-day data.
         5. Price vs. Reality: If 'Fetch.AI' real-time Oracle price deviates by > 2% from the 'Technical' or 'Fundamental' entry point, trigger a 'Sync Error'.
         
         Output Format:
