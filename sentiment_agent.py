@@ -5,17 +5,12 @@ import praw
 import yfinance as yf
 import pandas as pd
 import numpy as np
-import google.generativeai as genai
+from local_inference import LocalInferenceEngine
 
 class SentimentAgent:
     def __init__(self, ticker):
         self.ticker = ticker
-        self.api_key = os.getenv("GEMINI_API_KEY")
-        if self.api_key:
-            genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel('gemini-2.5-flash')
-        else:
-            self.model = None
+        self.model = LocalInferenceEngine()
             
         self.reddit_client_id = os.getenv("REDDIT_CLIENT_ID")
         self.reddit_client_secret = os.getenv("REDDIT_CLIENT_SECRET")

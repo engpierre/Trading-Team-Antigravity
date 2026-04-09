@@ -3,7 +3,7 @@ import io
 import sys
 import json
 import logging
-import google.generativeai as genai
+from local_inference import LocalInferenceEngine
 
 from fundamental_agent import FundamentalAgent
 from sentiment_agent import SentimentAgent
@@ -19,12 +19,7 @@ logging.basicConfig(level=logging.INFO, format='[SUPERVISOR] %(message)s')
 
 class SupervisorAgent:
     def __init__(self):
-        self.google_api_key = os.getenv("GEMINI_API_KEY")
-        if self.google_api_key:
-            genai.configure(api_key=self.google_api_key)
-            self.model = genai.GenerativeModel('gemini-2.5-flash')
-        else:
-            self.model = None
+        self.model = LocalInferenceEngine()
             
         self.integrated_command_prompt = """
         You are the Chief Investment Officer (CIO) and Master Synthesizer for Google Anti-gravity. 

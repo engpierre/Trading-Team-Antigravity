@@ -1,16 +1,11 @@
 import os
 import json
-import google.generativeai as genai
+from local_inference import LocalInferenceEngine
 
 class GeopoliticalIPBAgent:
     def __init__(self, ticker):
         self.ticker = ticker.upper()
-        self.api_key = os.getenv("GEMINI_API_KEY")
-        if self.api_key:
-            genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel('gemini-2.5-flash')
-        else:
-            self.model = None
+        self.model = LocalInferenceEngine()
             
         self.system_prompt = """
         DIRECTIVE: GEOPOLITICAL IPB & SUPPLY CHAIN FRICTION ANALYST

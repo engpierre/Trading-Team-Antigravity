@@ -205,8 +205,8 @@ def main():
                 with st.spinner(f"Initiating 8-Node Judicial Loop targeting {ticker}..."):
                     j_list, r_list = supervisor.execute(ticker, mode="manual")
                 
-                if not j_list:
-                    st.error("❌ Agent Swarm Failed. Ensure GEMINI_API_KEY is active in terminal profile.")
+                if not j_list or j_list[0] is None:
+                    st.error("❌ Agent Swarm Failed. Check the local inference engine logs for out-of-memory errors.")
                 else:
                     render_audit_card(ticker, j_list[0], r_list[0])
                     
@@ -226,10 +226,11 @@ def main():
                     j_list, r_list = supervisor.execute("SCAN", mode="discovery")
                     status.update(label="Reconnaissance Sweep Complete!", state="complete", expanded=False)
                     
-                if not j_list:
-                    st.error("❌ Reconnaissance Failed.")
+                if not j_list or all(j is None for j in j_list):
+                    st.error("❌ Reconnaissance Failed. Local Engine Initialization failed.")
                 else:
-                    st.success(f"Successfully calculated and adjudicated {len(j_list)} completely diversified algorithmic breakouts.")
+                    valid_j_list = [j for j in j_list if j is not None]
+                    st.success(f"Successfully calculated and adjudicated {len(valid_j_list)} completely diversified algorithmic breakouts.")
                     
                     # Intercept the Covariance Report globally injected into the first array object safely
                     cov_report = r_list[0].get('Covariance (Diversification Matrix)', '')
@@ -242,6 +243,8 @@ def main():
                         
                     # Generates flexible array architecture independent of volume payload
                     for j, r in zip(j_list, r_list):
+                        if j is None:
+                            continue
                         t_name = j.get("ticker", "UNKNOWN")
                         with st.expander(f"📌 HIGH-CONVICTION SCOUT TARGET LOCKED: {t_name}", expanded=True):
                             render_audit_card(t_name, j, r)

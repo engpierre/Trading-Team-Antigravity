@@ -3,17 +3,12 @@ import yfinance as yf
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
-import google.generativeai as genai
+from local_inference import LocalInferenceEngine
 
 class FundamentalAgent:
     def __init__(self, ticker):
         self.ticker = ticker.upper()
-        self.api_key = os.getenv("GEMINI_API_KEY")
-        if self.api_key:
-            genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel('gemini-2.5-flash')
-        else:
-            self.model = None
+        self.model = LocalInferenceEngine()
             
         self.system_prompt = """
         You are the 'Fundamental Agent'.
