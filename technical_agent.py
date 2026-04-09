@@ -21,6 +21,8 @@ class TechnicalAgent:
         4. CRITICAL: Scan for 'Volume Anomalies' (Volume > 200% of SMA).
         5. Assess Mansfield RS and provide ATR stops.
         
+        CRITICAL DIRECTIVE: You are a senior financial analyst; integrate a Monte Carlo simulation to project potential price paths for the given ticker. Use historical volatility and returns to model geometric Brownian motion, running thousands of simulations to generate a probability distribution of future prices. Output a summary of key percentiles, the median project price, and include a clear potential price target designed for dashboard display, alongside your existing technical signals.
+        
         Produce a highly structured Quant Desk Report summarizing these technicals using the strictly current precise price provided.
         """
 
@@ -33,8 +35,8 @@ class TechnicalAgent:
 
     def fetch_and_calculate(self):
         print(f"[*] Fetching technical anomaly data and live price for {self.ticker}...")
-        stock_data = yf.download(self.ticker, period="3mo", interval="1d", progress=False)
-        bench_data = yf.download(self.benchmark, period="3mo", interval="1d", progress=False)
+        stock_data = yf.download(self.ticker, period="1y", interval="1d", progress=False)
+        bench_data = yf.download(self.benchmark, period="1y", interval="1d", progress=False)
         
         # Obtain the most accurate and strictly current price
         try:
@@ -83,6 +85,33 @@ class TechnicalAgent:
             if latest['Close'] <= df.loc[min_close_idx]['Close'] * 1.02: # Near the low
                 bullish_divergence = True
 
+        # --- NEW MONTE CARLO SIMULATION (3-Months / ~63 Days) ---
+        # 1. Calculate log returns to find drift and volatility
+        log_returns = np.log(1 + df['Close'].pct_change()).dropna()
+        u = log_returns.mean()
+        var = log_returns.var()
+        drift = u - (0.5 * var)
+        stdev = log_returns.std()
+        
+        # 2. Setup 10,000 simulations over 63 trading days
+        t_intervals = 63 
+        simulations = 10000
+        
+        Z = np.random.normal(0, 1, size=(t_intervals, simulations))
+        daily_returns = np.exp(drift + stdev * Z)
+        
+        # 3. Project Price Paths
+        price_paths = np.zeros_like(daily_returns)
+        price_paths[0] = latest['Close']
+        for t in range(1, t_intervals):
+            price_paths[t] = price_paths[t-1] * daily_returns[t]
+            
+        # 4. Extract Percentiles
+        final_prices = price_paths[-1]
+        bear_case_5th = np.percentile(final_prices, 5)
+        median_target_50th = np.percentile(final_prices, 50)
+        bull_case_95th = np.percentile(final_prices, 95)
+
         from datetime import datetime
         current_date = datetime.now().strftime("%B %d, %Y")
         
@@ -96,6 +125,12 @@ class TechnicalAgent:
         - Volume: {latest['Volume']:.0f} (20-SMA: {latest['Vol_SMA_20']:.0f})
         - Volume Anomaly (>200%): {"YES (FLAGGED)" if vol_anomaly else "NO"}
         - Bullish Divergence Detected: {"YES (FLAGGED)" if bullish_divergence else "NO"}
+        
+        --- MONTE CARLO PROBABILITY DISTRIBUTION (3-MONTH / 63-DAY PROJECTION) ---
+        (Simulated using Geometric Brownian Motion with 10,000 iterations based on 1-Year Historical Volatility: {stdev*100:.2f}% Daily)
+        - 5th Percentile (Bear Case): ${bear_case_5th:.2f}
+        - 50th Percentile (Median Base Target): ${median_target_50th:.2f}
+        - 95th Percentile (Bull Case): ${bull_case_95th:.2f}
         """
         return data
 
