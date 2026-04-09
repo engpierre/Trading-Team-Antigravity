@@ -21,7 +21,7 @@ class TechnicalAgent:
         4. CRITICAL: Scan for 'Volume Anomalies' (Volume > 200% of SMA).
         5. Assess Mansfield RS and provide ATR stops.
         
-        CRITICAL DIRECTIVE: You are a senior financial analyst; integrate a Monte Carlo simulation to project potential price paths for the given ticker. Use historical volatility and returns to model geometric Brownian motion, running thousands of simulations to generate a probability distribution of future prices. Output a summary of key percentiles, the median project price, and include a clear potential price target designed for dashboard display, alongside your existing technical signals.
+        CRITICAL DIRECTIVE: You are a senior financial analyst; integrate a Monte Carlo simulation to project potential price paths for the given ticker. Use historical volatility and returns to model geometric Brownian motion, running thousands of simulations to generate a probability distribution of future prices. Output a summary of key percentiles, the median project price, and include a clear potential price target designed for dashboard display, alongside your existing technical signals. You MUST explicitly list the projected median price target in a clear, standalone format, ensuring it is visually identifiable for the dashboard.
         
         Produce a highly structured Quant Desk Report summarizing these technicals using the strictly current precise price provided.
         """
