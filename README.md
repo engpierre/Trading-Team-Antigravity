@@ -1,6 +1,6 @@
 # 🚀 Pierre Quant Agent (Anti-gravity)
 
-**Pierre Quant Agent** is an advanced, autonomous algorithmic quantitative research desk engineered for cloud-capable AgentFi execution. By leveraging a multi-agent AI framework powered natively by Google Generative AI (Gemini), the system continuously monitors, synthesizes, and evaluates market data across multiple critical dimensions—technicals, fundamentals, sentiment, and dark pool integrity—to generate mathematically structured trading signals.
+**Pierre Quant Agent** is an advanced, autonomous algorithmic quantitative research desk engineered for zero-cloud execution. By leveraging a multi-agent AI framework powered entirely by a localized **Gemma-4 (26-Billion Parameter) Inference Engine**, the system continuously monitors, synthesizes, and evaluates market data across multiple critical dimensions—technicals, fundamentals, sentiment, and dark pool integrity—to generate mathematically structured trading signals in a 100% air-gapped environment.
 
 ---
 
@@ -15,7 +15,9 @@
 - **Algorithmic Covariance Locks**: The Proactive Scanner enforces strict Force Composition metrics natively discarding positively correlated ($R > 0.85$) targets to guarantee perfectly uncoupled Alpha.
 - **High-Density 'War Room' Dashboard**: A completely re-engineered Streamlit UI utilizing 'Adaptive Wide' CSS container configurations, bespoke HTML metric bounds (`.quant-metric-box`), and an ultra-condensed Print Protocol for flawless 1-page PDF Executive board reporting.
 - **AgentFi Cloud Architecture**: Completely containerized for decentralized smart-contract integration, exporting dynamic `Signal_Report_Intent.json` files while running dual-duty alongside an MCP-wrapped localized Ground Truth Oracle Server.
-- **Alternative Data Rules Protocol**: Enforces quantitative mechanics like ATR-based stops and Mansfield Relative Strength—ignoring "vibes" in favor of strict empirical data points.
+- **Monte Carlo Projection Matrix**: Simulates 10,000 independent mathematical futures via Geometric Brownian Motion to project strict 63-day target probabilities directly on your dashboard.
+- **Real-Time Web Reconnaissance**: Natively intercepts and parses real-time global news via active RSS scraping without relying on external or paid search API keys.
+- **Alternative Data Rules Protocol**: Enforces quantitative mechanics like ATR-based stops and 50-day Volume Divergences—ignoring "vibes" in favor of strict empirical data points.
 
 ---
 
@@ -23,19 +25,19 @@
 
 The algorithmic framework relies on a decentralized, modular python agent hierarchy:
 
-1. **Scout Agent (`discovery_engine.py`)**: The Proactive Scanner. Mathematically models subsets against a SPY benchmark to isolate Top 10 explosive breakouts via Mansfield Relative Strength ($MRS$).
-2. **Covariance Agent (`covariance_agent.py`)**: The Diversification Lock. Prevents structural exposure by forcing the Scout to re-roll and decouple highly correlated tickers ($R>0.85$) using 60-day Pearson iteration loops prior to CIO execution.
-3. **Supervisor Agent (`supervisor_agent.py`)**: The overarching Natural Language judge. It triggers the continuous execution loop: `(Swarm Phase -> Geopolitical Interception -> Auditor Loop -> Critic Attack Phase -> Judicial Master Synthesis -> AAR Persistence Dump)`.
+1. **Scout Agent (`discovery_engine.py`)**: The Proactive Scanner. Mathematically isolates Top 10 explosive breakouts via Mansfield Relative Strength ($MRS$) and filters noise utilizing a strict 50-day Volume Divergence index.
+2. **Covariance Agent (`covariance_agent.py`)**: The Diversification Lock. Prevents structural exposure by forcing the Scout to re-roll and decouple highly correlated tickers ($R>0.85$).
+3. **Supervisor Agent (`supervisor_agent.py`)**: The overarching Master CIO. Triggers the continuous 8-node loop and enforces strict JSON formatting containing precise current and projected price extractions natively.
 4. **Optimizer Engine (`optimizer_engine.py`)**: Calculates dynamic $Global Trust$ arrays querying standard accuracy directly injecting mathematical Red Team boosts into the System Prompt.
 5. **Backtest Validator (`backtest_validator.py`)**: The ACID compliant overarching SQLite constructor defining the Mission Logs and Agent Attribution persistence ledgers.
-6. **Critic Agent (`critic_agent.py`)**: The Adversarial Auditor. Deployed explicitly to hunt for "Alpha Hallucination" by identifying structural weaknesses, Bear traps, and Volume Expansions inside the broader Swarm's reports. Includes **BlackwellCritic**, a 4-bit quantized local transformer (`google/gemma-4-26b-A4B-it`) specifically optimized via `BitsAndBytesConfig` for execution on RTX 5060 Ti `sm_120` architectures.
-7. **Geopolitical IPB Agent (`geopolitical_agent.py`)**: The Kinetic Friction Mapper. Calculates active supply chain chokepoints and physical trade vulnerabilities natively injecting 1.5x mathematical boosters into the Red Team if the global structure is deemed `VOLATILE`.
+6. **Critic Agent (`critic_agent.py`)**: The Adversarial Auditor. Deployed explicitly to hunt for "Alpha Hallucination" by identifying structural weaknesses, Bear traps, and Volume Expansions inside the broader Swarm's reports.
+7. **Geopolitical IPB Agent (`geopolitical_agent.py`)**: The Kinetic Friction Mapper. Calculates active supply chain chokepoints natively by intercepting and synthesizing live Real-Time Google News RSS feeds.
 8. **Whale-Watcher Agent (`whale_agent.py`)**: The Intelligence Officer. Maps Dark Pool blocks, Congressional sweeps, and overarching macro regimes utilizing strictly mapped FRED Yield Curve hooks.
 9. **Insider Integrity Auditor (`insider_agent.py`)**: The Logic Decoupler. Specifically isolates the Swarm payload hunting internal hallucination paradoxes natively.
 10. **Fundamental Agent (`fundamental_agent.py`)**: Scrapes trailing P/E, institutional margins, while explicitly trapping incorrect Megacap Debt ratios natively via the Reality Anchor.
 11. **Sentiment Agent (`sentiment_agent.py`)**: Queries live networks to monitor extreme retail panic surges (e.g. VIX spikes > 10%).
-12. **Technical Agent (`technical_agent.py`)**: Mathematically targets specific Price vs. RSI disparities while generating native structural timestamp arrays halting temporal drift protocols.
-13. **Fetch.AI Agent (`fetch_ai_agent.py`)**: Operating natively as a hyper-fast localized quantitative True Price Oracle.
+12. **Technical Agent (`technical_agent.py`)**: Mathematically targets Price/RSI disparities and natively simulates 10,000-path Geometric Brownian Motion to establish definitive 63-day Monte Carlo price targets.
+13. **Fetch.AI Agent (`fetch_ai_agent.py`)**: Operating natively as a hyper-fast localized quantitative True Price Oracle featuring native robust caching and historical market-close fallbacks.
 
 ---
 
@@ -43,24 +45,20 @@ The algorithmic framework relies on a decentralized, modular python agent hierar
 
 ### Prerequisites
 - Python 3.10+
-- A valid Google Gemini API Key
+- A Compute-Capable GPU with ~16GB+ VRAM (Optimized natively for RTX 5060 Ti architectures to run localized Gemma-4 Inference Engine payloads).
 - *(Optional)* Fetch.AI `uAgent` Network hook Endpoint
 
 ### Installation
 Install the necessary quantitative backend packages and the Streamlit frontend natively:
 
 ```bash
-pip install streamlit google-generativeai requests beautifulsoup4 praw yfinance pandas numpy fredapi torch transformers bitsandbytes accelerate
+pip install streamlit requests beautifulsoup4 praw yfinance pandas numpy fredapi torch transformers bitsandbytes accelerate
 ```
 
 *(Alternatively, the entire stack including the AAR SQLite ledger is containerized for AgentFi cloud deployments. Simply run `docker-compose up -d` to securely launch the persistent execution loop.)*
 
 ### Environment Setup
-You must initialize your Google Generative AI API Key before running the quantitative desk:
-```powershell
-$env:GEMINI_API_KEY="your-gemini-key-here"
-```
-*(Note: As of recent architectural shifts, the Master Oracle relies on a localized yfinance Model Context Protocol payload.)*
+As of recent architectural shifts, the Master Oracle and standard intelligence Swarm process exclusively via a 100% air-gapped `LocalInferenceEngine` singleton. External API keys (like Google Gemini) are **no longer required** for execution.
 
 ---
 
